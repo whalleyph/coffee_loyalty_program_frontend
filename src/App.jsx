@@ -7,7 +7,7 @@ function App() {
         axios.get("http://localhost:4000/api/coffeeData/").then(({ data }) => {
             setMovieData(data);
         });
-    }, []);
+    }, [movieData]);
 
     const memberList = movieData.map((memberObj) => {
         return (
@@ -16,11 +16,19 @@ function App() {
                     {memberObj.name} - {memberObj.stamps} stamp(s),{" "}
                     {memberObj.freeCoffees} free coffee(s) available
                 </p>
-                <button>add stamp</button>
-                <button>redeem free coffee</button>
+                <button onClick={() => addStamp(memberObj.id)}>add stamp</button>
+                <button onClick={() => redeemFreeCoffee(memberObj.id)}>redeem free coffee</button>
             </div>
         );
     });
+
+    function addStamp(id) {
+        axios.put(`http://localhost:4000/api/coffeeData/addStamp/${id}`)
+    }
+
+    function redeemFreeCoffee(id) {
+        axios.put(`http://localhost:4000/api/coffeeData/redeemFreeCoffee/${id}`)
+    }
 
     return (
         <div>
