@@ -3,6 +3,7 @@ import React from "react";
 
 function App() {
     const [movieData, setMovieData] = React.useState([]);
+    const [customerName, setCustomerName] = React.useState("");
     React.useEffect(() => {
         axios.get("http://localhost:4000/api/coffeeData/").then(({ data }) => {
             setMovieData(data);
@@ -36,14 +37,27 @@ function App() {
         );
     }
 
+    function handleChangeInCustomerName(event) {
+        setCustomerName(event.target.value)
+    }
+
+    function addNewMember() {
+        axios.post("http://localhost:4000/api/coffeeData/", {name: customerName})
+        setCustomerName("")
+    }
+
     return (
         <div>
             <h1>Coffee Members</h1>
             {memberList}
             <div className="addNewMember">
                 <p>Create a customer:</p>
-                <textarea placeholder="customer name"></textarea>
-                <button>add new member</button>
+                <textarea
+                    placeholder="customer name"
+                    value={customerName}
+                    onChange={handleChangeInCustomerName}
+                ></textarea>
+                <button onClick={addNewMember}>add new member</button>
             </div>
         </div>
     );
